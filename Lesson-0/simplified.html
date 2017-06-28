@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="https://fb.me/react-15.1.0.js"></script>
+    <script src="https://fb.me/react-dom-15.1.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.5.2/redux.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <title>Simplified Example</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+let { createStore, combineReducers } = Redux
+
+const INCREASE = 'INCREASE'
+const DECREASE = 'DECREASE'
+
+const INITIAL_STATE = 0
+
+function counterReducer(state = INITIAL_STATE, action = {}) {
+  switch (action.type) {
+    case INCREASE:
+      return state + 1
+
+    case DECREASE:
+      return state - 1
+
+    default:
+      return state
+  }
+}
+
+function increase() {
+  return { type: INCREASE }
+}
+
+function decrease() {
+  return { type: DECREASE }
+}
+
+const rootReducer = combineReducers({ counter: counterReducer })
+const store = createStore(rootReducer)
+
+store.subscribe(() => {
+  ReactDOM.render(
+    <div>
+    
+      <pre>
+        { JSON.stringify(store.getState(), null, 2) }
+      </pre>
+      
+      <button 
+        onClick={ () => store.dispatch(increase()) }>
+        Increase
+      </button>
+                
+      <button 
+        onClick={ () => store.dispatch(decrease()) }>
+        Decrease
+      </button>
+    
+  </div>,
+    document.getElementById('root')
+  )
+})
+
+store.dispatch({ type: 'INIT' })
+    </script>
+  </body>
+</html>
